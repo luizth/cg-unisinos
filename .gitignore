@@ -1,0 +1,8 @@
+# backup
+bk/
+
+# py
+*__pycache__/
+
+# venv
+venv/
