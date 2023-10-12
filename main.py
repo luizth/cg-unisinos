@@ -4,6 +4,8 @@ import sys
 
 from model import *
 from camera import Camera
+from mesh import Mesh
+from scene import Scene
 
 
 class GraphicsEngine:
@@ -31,13 +33,15 @@ class GraphicsEngine:
         self.delta_time = 0
         # camera
         self.camera = Camera(self)
+        # mesh
+        self.mesh = Mesh(self)
         # scene
-        self.scene = Cube(self)
+        self.scene = Scene(self)
 
     def check_event(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
-                self.scene.destroy()
+                self.mesh.destroy()
                 pg.quit()
                 sys.exit()
 
