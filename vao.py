@@ -14,6 +14,10 @@ class VAO:
 
         self.vaos['table'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['table'])
         self.vaos['trout'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['trout'])
+        # self.vaos['teapot'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['teapot'])
+        self.vaos['terrain'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['terrain'])
+        self.vaos['skull'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['skull'])
+
 
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attrib)])

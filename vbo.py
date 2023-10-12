@@ -14,6 +14,9 @@ class VBO:
         self.vbos['cube'] = CubeVBO(ctx)
         self.vbos['table'] = TableVBO(ctx)
         self.vbos['trout'] = TroutVBO(ctx)
+        # self.vbos['teapot'] = TeapotVBO(ctx)
+        self.vbos['terrain'] = TerrainVBO(ctx)
+        self.vbos['skull'] = SkullVBO(ctx)
 
     def destroy(self):
         [vbo.destroy() for vbo in self.vbos.values()]
@@ -126,6 +129,48 @@ class TroutVBO(BaseVBO):
 
     def get_vertex_data(self):
         objs = pywavefront.Wavefront(self.objects_path + '/trout/trout.obj', cache=True, parse=True)
+        obj = objs.materials.popitem()[1]
+        vertex_data = obj.vertices
+        vertex_data = np.array(vertex_data, dtype=np.float32)
+        return vertex_data
+
+
+# class TeapotVBO(BaseVBO):
+#     def __init__(self, ctx):
+#         super().__init__(ctx)
+#         self.format = '2f 3f 3f'
+#         self.attrib = ['in_texcoord_0', 'in_normal', 'in_position']
+#
+#     def get_vertex_data(self):
+#         objs = pywavefront.Wavefront(self.objects_path + '/teapot/20900_Brown_Betty_Teapot_v1.obj', cache=True, parse=True)
+#         obj = objs.materials.popitem()[1]
+#         vertex_data = obj.vertices
+#         vertex_data = np.array(vertex_data, dtype=np.float32)
+#         return vertex_data
+
+
+class TerrainVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '2f 3f 3f'
+        self.attrib = ['in_texcoord_0', 'in_normal', 'in_position']
+
+    def get_vertex_data(self):
+        objs = pywavefront.Wavefront(self.objects_path + '/terrain/terrain.obj', cache=True, parse=True)
+        obj = objs.materials.popitem()[1]
+        vertex_data = obj.vertices
+        vertex_data = np.array(vertex_data, dtype=np.float32)
+        return vertex_data
+
+
+class SkullVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '2f 3f 3f'
+        self.attrib = ['in_texcoord_0', 'in_normal', 'in_position']
+
+    def get_vertex_data(self):
+        objs = pywavefront.Wavefront(self.objects_path + '/skull/12140_Skull_v3_L2.obj', cache=True, parse=True)
         obj = objs.materials.popitem()[1]
         vertex_data = obj.vertices
         vertex_data = np.array(vertex_data, dtype=np.float32)

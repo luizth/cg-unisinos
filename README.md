@@ -15,10 +15,9 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
-#### Comandos
+#### Controles
 - **WASD**: move a camera para frente (↑), para esquerda (←), para trás (↓) e para direita (→)
-- *QE*: move a camera para cima (↑) e para baixo (↓)
-
+- **QE**: move a camera para cima (↑) e para baixo (↓)
 
 
 ### Overview dos diretórios e módulos do projeto
@@ -39,3 +38,11 @@ Módulos (`TODO`):
 - **texture**
 - **vao**
 - **vbo**
+
+
+### Features
+
+**TODO**:
+- Implementar .OBJ parser próprio e substituir `pywaveform`
+- Implementar bounding box para os modelos
+- Implementar projétil

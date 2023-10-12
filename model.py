@@ -98,7 +98,6 @@ class Table(BaseModel):
         self.shader_program['m_model'].write(self.m_model)
 
 
-
 class Trout(BaseModel):
     def __init__(self, app, vao_name='trout', tex_id='trout', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
@@ -108,6 +107,74 @@ class Trout(BaseModel):
         self.texture.use()
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+
+class Teapot(BaseModel):
+    def __init__(self, app, vao_name='teapot', tex_id='teapot', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.on_init()
+
+    def update(self):
+        self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+
+class Terrain(BaseModel):
+    def __init__(self, app, vao_name='terrain', tex_id='terrain', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.on_init()
+
+    def update(self):
+        self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+
+class Skull(BaseModel):
+    def __init__(self, app, vao_name='skull', tex_id='skull', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.on_init()
+
+    def update(self):
+        self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+
+        self.m_model = glm.rotate(self.m_model, self.app.time * 0.002, glm.vec3(0, 0, -1))
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
