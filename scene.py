@@ -11,10 +11,15 @@ class Scene:
         self.objects.append(obj)
 
     def load(self):
-        self.add_object(Pyramid(self.app, pos=(0, 2, 0), scale=(1, 2, 1)))
-        self.add_object(Cube(self.app))
-        # add(Cube(app, pos=(0, 0,-2.5), rot=(45, 0, 0), scale=(1, 2, 1)))
-        # add(Cube(app, pos=(0, 0, 2.5), rot=(0, 0, 45), scale=(1, 1, 2)))
+        # load locally for better performance
+        app = self.app
+        add = self.add_object
+
+        n, s = 5, 3
+        for x in range(-n, n, s):
+            for z in range(-n, n, s):
+                add(Cube(app, pos=(x, -s, z)))
+                add(Pyramid(app, pos=(x, -s+2, z)))
 
     def render(self):
         [obj.render() for obj in self.objects]

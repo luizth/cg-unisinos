@@ -32,15 +32,25 @@ class BaseVBO:
 class PyramidVBO(BaseVBO):
     def __init__(self, ctx):
         super().__init__(ctx)
-        self.format = '3f'
-        self.attrib = ['in_position']
+        self.format = '2f 3f'
+        self.attrib = ['in_texcoord_0', 'in_position']
 
     def get_vertex_data(self):
-        # vertex_data = [(-0.6, -0.8, 0.0), (0.6, -0.8, 0.0), (0.0, 0.8, 0.0)]
 
-        vertices = [(-1,-1, 1), (1,-1, 1), ( 0, 1, 0), (-1,-1,-1), (1,-1,-1)]
-        indices = [(0, 1, 2), (1, 4, 2), (4, 3, 2), (3, 0, 2), (0, 4, 1), (0, 3, 4)]
+        vertices = [(-1,-1, 1), (1,-1, 1),
+                    ( 0, 1, 0), (-1,-1,-1),
+                    (1,-1,-1)]
+        indices = [(0, 1, 2), (1, 4, 2),
+                   (4, 3, 2), (3, 0, 2),
+                   (0, 4, 1), (0, 3, 4)]
         vertex_data = get_data(vertices, indices)
+
+        tex_coord = [(0, 0), (1, 0), (0.5, 1)]
+        tex_coord_indices = [(0, 1, 2), (1, 2, 0), (2, 0, 1),
+                             (0, 1, 2), (1, 2, 0), (0, 1, 2)]
+        tex_coord_data = get_data(tex_coord, tex_coord_indices)
+
+        vertex_data = np.hstack((tex_coord_data, vertex_data))
         return vertex_data
 
 
