@@ -9,7 +9,7 @@ $ pip install -r requirements.txt
 ```
 
 
-### Executando o código
+### Executando o programa
 
 ```bash
 $ python main.py
