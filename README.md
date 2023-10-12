@@ -15,6 +15,11 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
+#### Comandos
+- **WASD**: move a camera para frente (↑), para esquerda (←), para trás (↓) e para direita (→)
+- *QE*: move a camera para cima (↑) e para baixo (↓)
+
+
 
 ### Overview dos diretórios e módulos do projeto
 

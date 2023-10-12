@@ -15,11 +15,10 @@ class Scene:
         app = self.app
         add = self.add_object
 
-        n, s = 2, 2
-        for x in range(-n, n, s):
-            for z in range(-n, n, s):
-                add(Cube(app, pos=(x, -s, z)))
-                add(Pyramid(app, pos=(x, -s+2, z)))
+        add(Table(app, pos=(0, 0, 0), scale=(0.5, 0.5, 0.5)))
+        add(Cube(app, pos=(-1.4, 5.3, -1.2), rot=(0, -26, 0), scale=(0.8, 0.8, 0.8)))
+        add(Cube(app, pos=(0.26, 5.05, -1.2), rot=(0, -38, 0), scale=(0.55, 0.55, 0.55)))
+        add(Trout(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
 
     def render(self):
         [obj.render() for obj in self.objects]

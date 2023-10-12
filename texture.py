@@ -8,12 +8,13 @@ class Texture:
         self.textures = {}
         self.textures[0] = self.get_texture(path='textures/img.png')
         self.textures[1] = self.get_texture(path='textures/triangle.png')
+        self.textures['table'] = self.get_texture(path='objects/mesa/table01.bmp')
+        self.textures['trout'] = self.get_texture(path='objects/trout/trout03-3a-wav1.jpg')
 
-    def get_texture(self, path):
+    def get_texture(self, path, flip_x=False, flip_y=True):
         texture = pg.image.load(path).convert()
-        texture = pg.transform.flip(texture, flip_x=False, flip_y=True)
+        texture = pg.transform.flip(texture, flip_x=flip_x, flip_y=flip_y)
         texture = self.ctx.texture(size=texture.get_size(), components=3, data=pg.image.tostring(texture, 'RGB'))
-
         # mipmap
         texture.filter = (mgl.LINEAR_MIPMAP_LINEAR, mgl.LINEAR)
         texture. build_mipmaps()

@@ -1,4 +1,10 @@
 import numpy as np
+import pywavefront
+
+
+def get_data(vertices, indices):
+    data = [vertices[ind] for triangle in indices for ind in triangle]
+    return np.array(data, dtype=np.float32)
 
 
 class VBO:
@@ -6,14 +12,17 @@ class VBO:
         self.vbos = {}
         self.vbos['pyramid'] = PyramidVBO(ctx)
         self.vbos['cube'] = CubeVBO(ctx)
+        self.vbos['table'] = TableVBO(ctx)
+        self.vbos['trout'] = TroutVBO(ctx)
 
     def destroy(self):
         [vbo.destroy() for vbo in self.vbos.values()]
 
 
 class BaseVBO:
-    def __init__(self, ctx):
+    def __init__(self, ctx, objects_path='objects/'):
         self.ctx = ctx
+        self.objects_path = objects_path
         self.vbo = self.get_vbo()
         self.format: str = None
         self.attrib: str = None
@@ -95,6 +104,29 @@ class CubeVBO(BaseVBO):
         return vertex_data
 
 
-def get_data(vertices, indices):
-    data = [vertices[ind] for triangle in indices for ind in triangle]
-    return np.array(data, dtype=np.float32)
+class TableVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '2f 3f 3f'
+        self.attrib = ['in_texcoord_0', 'in_normal', 'in_position']
+
+    def get_vertex_data(self):
+        objs = pywavefront.Wavefront(self.objects_path + '/mesa/table01.obj', cache=True, parse=True)
+        obj = objs.materials.popitem()[1]
+        vertex_data = obj.vertices
+        vertex_data = np.array(vertex_data, dtype=np.float32)
+        return vertex_data
+
+
+class TroutVBO(BaseVBO):
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.format = '2f 3f 3f'
+        self.attrib = ['in_texcoord_0', 'in_normal', 'in_position']
+
+    def get_vertex_data(self):
+        objs = pywavefront.Wavefront(self.objects_path + '/trout/trout.obj', cache=True, parse=True)
+        obj = objs.materials.popitem()[1]
+        vertex_data = obj.vertices
+        vertex_data = np.array(vertex_data, dtype=np.float32)
+        return vertex_data

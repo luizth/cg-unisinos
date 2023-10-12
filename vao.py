@@ -9,10 +9,11 @@ class VAO:
         self.program = ShaderProgram(ctx)
         self.vaos = {}
 
-        # pyramid vao
         self.vaos['pyramid'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['pyramid'])
-        # cube vao
         self.vaos['cube'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['cube'])
+
+        self.vaos['table'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['table'])
+        self.vaos['trout'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['trout'])
 
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attrib)])
