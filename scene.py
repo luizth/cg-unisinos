@@ -15,7 +15,7 @@ class Scene:
         app = self.app
         add = self.add_object
 
-        n, s = 5, 3
+        n, s = 2, 3
         for x in range(-n, n, s):
             for z in range(-n, n, s):
                 add(Cube(app, pos=(x, -s, z)))
