@@ -186,3 +186,29 @@ class Skull(BaseModel):
         self.shader_program['m_proj'].write(self.camera.m_proj)
         self.shader_program['m_view'].write(self.camera.m_view)
         self.shader_program['m_model'].write(self.m_model)
+
+
+class Projectile(BaseModel):
+    def __init__(self, app, vao_name='projectile', tex_id=2, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.speed = 0.8
+        self.on_init()
+
+    def update(self):
+        self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+
+        # update pos based on camera forward vector
+        self.m_model = glm.translate(self.m_model, self.camera.forward * self.speed)
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)

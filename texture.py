@@ -8,6 +8,7 @@ class Texture:
         self.textures = {}
         self.textures[0] = self.get_texture(path='textures/img.png')
         self.textures[1] = self.get_texture(path='textures/triangle.png')
+        self.textures[2] = self.get_texture(path='textures/img_1.png')
         self.textures['table'] = self.get_texture(path='objects/mesa/table01.bmp')
         self.textures['trout'] = self.get_texture(path='objects/trout/trout03-3a-wav1.jpg')
         # self.textures['teapot'] = self.get_texture(path='objects/teapot/Blank.mtl')

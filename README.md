@@ -18,6 +18,7 @@ $ python main.py
 #### Controles
 - **WASD**: move a camera para frente (↑), para esquerda (←), para trás (↓) e para direita (→)
 - **QE**: move a camera para cima (↑) e para baixo (↓)
+- **SPACE**: dispara projétil
 
 
 ### Overview dos diretórios e módulos do projeto
@@ -45,4 +46,3 @@ Módulos (`TODO`):
 **TODO**:
 - Implementar .OBJ parser próprio e substituir `pywaveform`
 - Implementar bounding box para os modelos
-- Implementar projétil

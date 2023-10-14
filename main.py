@@ -44,6 +44,8 @@ class GraphicsEngine:
                 self.mesh.destroy()
                 pg.quit()
                 sys.exit()
+            elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                self.scene.shoot_projectile()
 
     def get_time(self):
         self.time = pg.time.get_ticks() * 0.001

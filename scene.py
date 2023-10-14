@@ -22,5 +22,8 @@ class Scene:
         add(Trout(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
         add(Skull(app, pos=(1.3, 4.5, 0.8), rot=(-90, 0, -45), scale=(0.05, 0.05, 0.05)))
 
+    def shoot_projectile(self):
+        self.add_object(Projectile(self.app, pos=self.app.camera.position, rot=self.app.camera.forward))
+
     def render(self):
         [obj.render() for obj in self.objects]
