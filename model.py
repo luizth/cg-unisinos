@@ -143,7 +143,7 @@ class Teapot(BaseModel):
 
 
 class Terrain(BaseModel):
-    def __init__(self, app, vao_name='terrain', tex_id='terrain', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+    def __init__(self, app, vao_name='terrain', tex_id='terrain', pos=(0, 0, 0), rot=(0, 0, 0), scale=(5, 1, 5)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
 
@@ -208,6 +208,29 @@ class Projectile(BaseModel):
         self.texture = self.app.mesh.texture.textures[self.tex_id]
         self.shader_program['u_texture_0'] = 0
         self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+class Car(BaseModel):
+    def __init__(self, app, vao_name='car', tex_id='car', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.on_init()
+
+    def update(self):
+        #self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+
+        self.m_model = glm.rotate(self.m_model, self.app.time * 0.002, glm.vec3(0, 0, -1))
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        #self.texture.use()
         # mvp
         self.shader_program['m_proj'].write(self.camera.m_proj)
         self.shader_program['m_view'].write(self.camera.m_view)
