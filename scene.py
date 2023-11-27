@@ -25,7 +25,7 @@ class Scene:
 
     def shoot_projectile(self):
         self.add_object(Projectile(self.app, positionToFollow = 
-        glm.vec3(self.objects[4].pos), pos=self.app.camera.position, rot=self.app.camera.forward))
+        glm.vec3(self.objects[4].pos), ticks = 50, pos=self.app.camera.position, rot=self.app.camera.forward))
 
     def render(self):
         [obj.render() for obj in self.objects]

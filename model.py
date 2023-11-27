@@ -192,19 +192,23 @@ class Skull(BaseModel):
 
 class Projectile(BaseModel):
     def __init__(self, app, vao_name='projectile', tex_id=2,
-    positionToFollow = glm.vec3(0, 0, -1), pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+    positionToFollow = glm.vec3(0, 0, -1), pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1),
+    ticks = 100):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
-        self.speed = 0.8
         self.on_init()
+        self.ticks = ticks
         self.positionToFollow = positionToFollow
+        self.translationVector = (positionToFollow - self.pos) * 1./ticks
+        self.countTicks = 0
 
     def update(self):
         self.texture.use()
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
 
-        # update pos based on camera forward vector
-        self.m_model = glm.translate(self.m_model, self.camera.forward * self.speed)
+        if self.countTicks < self.ticks:
+            self.m_model = glm.translate(self.m_model, self.translationVector)
+            self.countTicks += 1
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
