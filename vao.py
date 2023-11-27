@@ -18,7 +18,7 @@ class VAO:
         self.vaos['terrain'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['terrain'])
         self.vaos['skull'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['skull'])
         self.vaos['projectile'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['projectile'])
-        self.vaos['car'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['car'])
+        #self.vaos['car'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['car'])
 
 
     def get_vao(self, program, vbo):

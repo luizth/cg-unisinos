@@ -21,10 +21,11 @@ class Scene:
         add(Cube(app, pos=(0.26, 5.05, -1.2), rot=(0, -38, 0), scale=(0.55, 0.55, 0.55)))
         #add(Trout(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
         add(Skull(app, pos=(1.3, 4.5, 0.8), rot=(-90, 0, -45), scale=(0.05, 0.05, 0.05)))
-        add(Car(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
+        #add(Car(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
 
     def shoot_projectile(self):
-        self.add_object(Projectile(self.app, pos=self.app.camera.position, rot=self.app.camera.forward))
+        self.add_object(Projectile(self.app, positionToFollow = 
+        glm.vec3(self.objects[4].pos), pos=self.app.camera.position, rot=self.app.camera.forward))
 
     def render(self):
         [obj.render() for obj in self.objects]

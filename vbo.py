@@ -18,7 +18,7 @@ class VBO:
         self.vbos['terrain'] = TerrainVBO(ctx)
         self.vbos['skull'] = SkullVBO(ctx)
         self.vbos['projectile'] = ProjectileVBO(ctx)
-        self.vbos['car'] = CarVBO(ctx)
+        #self.vbos['car'] = CarVBO(ctx)
 
     def destroy(self):
         [vbo.destroy() for vbo in self.vbos.values()]

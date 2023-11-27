@@ -1,5 +1,5 @@
 import glm
-
+import math
 
 class BaseModel:
     def __init__(self, app, vao_name, tex_id, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
@@ -174,7 +174,9 @@ class Skull(BaseModel):
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
 
-        self.m_model = glm.rotate(self.m_model, self.app.time * 0.002, glm.vec3(0, 0, -1))
+        self.m_model = glm.rotate(self.m_model, 0.02, glm.vec3(0, 0, -1))
+        #print(glm.atan(-self.m_model[0][1], self.m_model[1][1]) * 180./math.pi)
+        #print(glm.atan(-self.m_model[2][0], self.m_model[2][2]) * 180./math.pi)
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
@@ -189,10 +191,12 @@ class Skull(BaseModel):
 
 
 class Projectile(BaseModel):
-    def __init__(self, app, vao_name='projectile', tex_id=2, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+    def __init__(self, app, vao_name='projectile', tex_id=2,
+    positionToFollow = glm.vec3(0, 0, -1), pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.speed = 0.8
         self.on_init()
+        self.positionToFollow = positionToFollow
 
     def update(self):
         self.texture.use()

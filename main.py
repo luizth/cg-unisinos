@@ -46,6 +46,16 @@ class GraphicsEngine:
                 sys.exit()
             elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.scene.shoot_projectile()
+            elif event.type == pg.KEYDOWN and event.key == pg.K_l:
+                self.camera.editMode = not self.camera.editMode
+                if(self.camera.editMode):
+                    self.camera.perspective_position = self.camera.position
+                    self.camera.perspective_yaw = self.camera.yaw
+                    self.camera.perspective_pitch = self.camera.pitch
+                else:
+                    self.camera.position =  self.camera.perspective_position
+                    self.camera.yaw = self.camera.perspective_yaw
+                    self.camera.pitch = self.camera.perspective_pitch
 
     def get_time(self):
         self.time = pg.time.get_ticks() * 0.001
@@ -63,7 +73,7 @@ class GraphicsEngine:
         while True:
             self.get_time()
             self.check_event()
-            self.camera.update()
+            self.camera.update(self.scene.objects[4])
             self.render()
             self.delta_time = self.clock.tick(60)
 
