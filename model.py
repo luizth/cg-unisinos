@@ -194,27 +194,27 @@ class Skull(BaseModel):
 
 class Projectile(BaseModel):
     def __init__(self, app, objectToFollow, vao_name='projectile', tex_id=2,
-    pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+    pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1), speed = 0.3):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
-        #self.ticks = ticks
+        #self.distance = distance
         self.objectToFollow = objectToFollow
-        self.countTicks = 0
+        self.speed = speed
 
     def update(self):
         self.texture.use()
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
+        self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
 
         self.translationVector = (self.objectToFollow.pos - self.pos)
-        self.ticks = math.sqrt((self.translationVector[0])*(self.translationVector[0])
+        self.distance = math.sqrt((self.translationVector[0])*(self.translationVector[0])
         + (self.translationVector[1])*(self.translationVector[1])
         + (self.translationVector[2])*(self.translationVector[2]))
-        #print(self.ticks)
+        print("Distance:", self.distance)
         
-        if self.countTicks < self.ticks:
-            self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.ticks)
-            self.countTicks += 1
+        #if self.distance > self.speed:
+        self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.distance * self.speed)
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
