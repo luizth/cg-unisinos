@@ -53,7 +53,7 @@ class Camera:
         if self.editMode:
             self.position = objectToFollow.pos + glm.vec3(0, 1, 0)
             self.yaw = glm.atan(-objectToFollow.m_model[0][1], objectToFollow.m_model[1][1]) * 180./math.pi
-            self.pitch = glm.atan(-objectToFollow.m_model[2][0], objectToFollow.m_model[2][2]) * 180./math.pi
+            self.pitch = glm.atan(objectToFollow.m_model[2][0], objectToFollow.m_model[2][2]) * 180./math.pi
 
     def move(self):
         self.velocity = SPEED * self.app.delta_time

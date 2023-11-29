@@ -24,8 +24,8 @@ class Scene:
         #add(Car(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
 
     def shoot_projectile(self):
-        self.add_object(Projectile(self.app, positionToFollow = 
-        glm.vec3(self.objects[4].pos), ticks = 50, pos=self.app.camera.position, rot=self.app.camera.forward))
+        self.add_object(Projectile(self.app, objectToFollow = 
+        self.objects[4], pos=self.app.camera.position, rot=self.app.camera.forward))
 
     def render(self):
         [obj.render() for obj in self.objects]

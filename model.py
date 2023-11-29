@@ -174,6 +174,8 @@ class Skull(BaseModel):
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
 
+        self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
+        self.m_model = glm.translate(self.m_model, glm.vec3(1,1,1) * 0.2)
         self.m_model = glm.rotate(self.m_model, 0.02, glm.vec3(0, 0, -1))
         #print(glm.atan(-self.m_model[0][1], self.m_model[1][1]) * 180./math.pi)
         #print(glm.atan(-self.m_model[2][0], self.m_model[2][2]) * 180./math.pi)
@@ -191,14 +193,12 @@ class Skull(BaseModel):
 
 
 class Projectile(BaseModel):
-    def __init__(self, app, vao_name='projectile', tex_id=2,
-    positionToFollow = glm.vec3(0, 0, -1), pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1),
-    ticks = 100):
+    def __init__(self, app, objectToFollow, vao_name='projectile', tex_id=2,
+    pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
-        self.ticks = ticks
-        self.positionToFollow = positionToFollow
-        self.translationVector = (positionToFollow - self.pos) * 1./ticks
+        #self.ticks = ticks
+        self.objectToFollow = objectToFollow
         self.countTicks = 0
 
     def update(self):
@@ -206,8 +206,14 @@ class Projectile(BaseModel):
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
 
+        self.translationVector = (self.objectToFollow.pos - self.pos)
+        self.ticks = math.sqrt((self.translationVector[0])*(self.translationVector[0])
+        + (self.translationVector[1])*(self.translationVector[1])
+        + (self.translationVector[2])*(self.translationVector[2]))
+        #print(self.ticks)
+        
         if self.countTicks < self.ticks:
-            self.m_model = glm.translate(self.m_model, self.translationVector)
+            self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.ticks)
             self.countTicks += 1
         self.shader_program['m_model'].write(self.m_model)
 
