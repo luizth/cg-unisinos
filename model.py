@@ -10,8 +10,29 @@ class BaseModel:
         self.m_model = self.get_model_matrix()
         self.tex_id = tex_id
         self.vao = app.mesh.vao.vaos[vao_name]
+        self.vao_name = vao_name
         self.shader_program = self.vao.program
         self.camera = self.app.camera
+
+    def get_minX(self):
+        self.minX= self.pos[0] - self.scale[0]/2
+        return self.minX
+    def get_maxX(self):
+        self.maxX = self.pos[0] + self.scale[0]/2
+        return self.maxX
+    def get_minY(self):
+        self.minY = self.pos[1] - self.scale[1]/2
+        return self.minY
+    def get_maxY(self):
+        self.maxY = self.pos[1] + self.scale[1]/2
+        return self.maxY
+    def get_minZ(self):
+        self.minZ = self.pos[2] - self.scale[2]/2
+        return self.minZ
+    def get_maxZ(self):
+        self.maxZ = self.pos[2] + self.scale[2]/2
+        return self.maxZ
+
 
     def update(self): ...
 
@@ -31,6 +52,8 @@ class BaseModel:
         self.update()
         self.vao.render()
 
+    def destroy(self):
+        print("destroyed")
 
 class Pyramid(BaseModel):
     def __init__(self, app, vao_name='pyramid', tex_id=1, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
@@ -177,8 +200,6 @@ class Skull(BaseModel):
         self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
         self.m_model = glm.translate(self.m_model, glm.vec3(1,1,1) * 0.2)
         self.m_model = glm.rotate(self.m_model, 0.02, glm.vec3(0, 0, -1))
-        #print(glm.atan(-self.m_model[0][1], self.m_model[1][1]) * 180./math.pi)
-        #print(glm.atan(-self.m_model[2][0], self.m_model[2][2]) * 180./math.pi)
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
@@ -197,7 +218,6 @@ class Projectile(BaseModel):
     pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1), speed = 0.3):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
-        #self.distance = distance
         self.objectToFollow = objectToFollow
         self.speed = speed
 
@@ -211,11 +231,61 @@ class Projectile(BaseModel):
         self.distance = math.sqrt((self.translationVector[0])*(self.translationVector[0])
         + (self.translationVector[1])*(self.translationVector[1])
         + (self.translationVector[2])*(self.translationVector[2]))
-        print("Distance:", self.distance)
+        #print("Distance:", self.distance)
         
-        #if self.distance > self.speed:
-        self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.distance * self.speed)
+        if self.isColliding():
+            print("COLLIDE")
+            self.collide = True
+        else:
+            self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.distance * self.speed)
         self.shader_program['m_model'].write(self.m_model)
+
+    def isColliding(self):
+        x_in = False
+        y_in = False
+        z_in = False
+
+        if self.get_minX() >= self.objectToFollow.get_minX():
+            if self.get_minX() <= self.objectToFollow.get_maxX():
+                x_in = True
+                #print("x in")
+        if self.get_maxX() >= self.objectToFollow.get_minX():
+            if self.get_maxX() <= self.objectToFollow.get_maxX():
+                x_in = True
+                #print("x in")
+        if self.get_minX() <= self.objectToFollow.get_minX():
+            if self.get_maxX() >= self.objectToFollow.get_maxX():
+                x_in = True
+                #print("x in")
+
+        
+        if self.get_minY() >= self.objectToFollow.get_minY():
+            if self.get_minY() <= self.objectToFollow.get_maxY():
+                y_in = True
+                #print("y in")
+        if self.get_maxY() >= self.objectToFollow.get_minY():
+            if self.get_maxY() <= self.objectToFollow.get_maxY():
+                y_in = True
+                #print("y in")
+        if self.get_minY() <= self.objectToFollow.get_minY():
+            if self.get_maxY() >= self.objectToFollow.get_maxY():
+                y_in = True
+                #print("y in")
+
+        if self.get_minZ() >= self.objectToFollow.get_minZ():
+            if self.get_minZ() <= self.objectToFollow.get_maxZ():
+                z_in = True
+                #print("z in")
+        if self.get_maxZ() >= self.objectToFollow.get_minZ():
+            if self.get_maxZ() <= self.objectToFollow.get_maxZ():
+                z_in = True
+                #print("z in")
+        if self.get_minZ() <= self.objectToFollow.get_minZ():
+            if self.get_maxZ() >= self.objectToFollow.get_maxZ():
+                z_in = True
+                #print("z in")
+
+        return (x_in and y_in and z_in)
 
     def on_init(self):
         # texture
