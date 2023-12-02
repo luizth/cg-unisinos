@@ -6,6 +6,7 @@ class Scene:
         self.app = app
         self.objects = []
         self.load()
+        self.targetDestroyed = False
 
     def add_object(self, obj):
         self.objects.append(obj)
@@ -24,6 +25,9 @@ class Scene:
         #add(Car(app, pos=(-2.2, 6.1, 0), rot=(-90, 0, 46), scale=(0.4, 0.4, 0.4)))
 
     def shoot_projectile(self):
+        if(self.targetDestroyed):
+            print("Target already destroyed")
+            return
         self.add_object(Projectile(self.app, objectToFollow = 
         self.objects[4], pos=self.app.camera.position, rot=self.app.camera.forward))
 

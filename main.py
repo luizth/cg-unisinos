@@ -73,7 +73,8 @@ class GraphicsEngine:
         while True:
             self.get_time()
             self.check_event()
-            self.camera.update(self.scene.objects[4])
+            if(len(self.scene.objects) > 4):
+                self.camera.update(self.scene.objects[4])
             self.render()
             self.delta_time = self.clock.tick(60)
 

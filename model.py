@@ -235,7 +235,9 @@ class Projectile(BaseModel):
         
         if self.isColliding():
             print("COLLIDE")
-            self.collide = True
+            self.app.scene.targetDestroyed = True
+            self.app.scene.objects.remove(self.objectToFollow)
+            self.app.scene.objects.remove(self)
         else:
             self.m_model = glm.translate(self.m_model, self.translationVector * 1./self.distance * self.speed)
         self.shader_program['m_model'].write(self.m_model)
