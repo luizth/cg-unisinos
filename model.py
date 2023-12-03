@@ -55,6 +55,29 @@ class BaseModel:
     def destroy(self):
         print("destroyed")
 
+
+class Pista(BaseModel):
+    def __init__(self, app, vao_name='pista', tex_id='road', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
+        super().__init__(app, vao_name, tex_id, pos, rot, scale)
+        self.on_init()
+
+    def update(self):
+        self.texture.use()
+        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+    def on_init(self):
+        # texture
+        self.texture = self.app.mesh.texture.textures[self.tex_id]
+        self.shader_program['u_texture_0'] = 0
+        self.texture.use()
+        # mvp
+        self.shader_program['m_proj'].write(self.camera.m_proj)
+        self.shader_program['m_view'].write(self.camera.m_view)
+        self.shader_program['m_model'].write(self.m_model)
+
+
 class Pyramid(BaseModel):
     def __init__(self, app, vao_name='pyramid', tex_id=1, pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1)):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
@@ -229,10 +252,10 @@ class Projectile(BaseModel):
 
         self.translationVector = (self.objectToFollow.pos - self.pos)
         self.distance = math.sqrt((self.translationVector[0])*(self.translationVector[0])
-        + (self.translationVector[1])*(self.translationVector[1])
-        + (self.translationVector[2])*(self.translationVector[2]))
+            + (self.translationVector[1])*(self.translationVector[1])
+            + (self.translationVector[2])*(self.translationVector[2]))
         #print("Distance:", self.distance)
-        
+
         if self.isColliding():
             print("COLLIDE")
             self.app.scene.targetDestroyed = True
@@ -260,7 +283,6 @@ class Projectile(BaseModel):
                 x_in = True
                 #print("x in")
 
-        
         if self.get_minY() >= self.objectToFollow.get_minY():
             if self.get_minY() <= self.objectToFollow.get_maxY():
                 y_in = True

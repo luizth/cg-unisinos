@@ -15,6 +15,9 @@ class Texture:
         self.textures['terrain'] = self.get_texture(path='textures/terrain_01.png')
         self.textures['skull'] = self.get_texture(path='objects/skull/Skull.jpg')
 
+        self.textures['road'] = self.get_texture(path='textures/road.png')
+
+
     def get_texture(self, path, flip_x=False, flip_y=True):
         texture = pg.image.load(path).convert()
         texture = pg.transform.flip(texture, flip_x=flip_x, flip_y=flip_y)

@@ -20,6 +20,8 @@ class VAO:
         self.vaos['projectile'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['projectile'])
         #self.vaos['car'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['car'])
 
+        self.vaos['pista'] = self.get_vao(program=self.program.programs['default'], vbo=self.vbo.vbos['pista'])
+
 
     def get_vao(self, program, vbo):
         vao = self.ctx.vertex_array(program, [(vbo.vbo, vbo.format, *vbo.attrib)])
