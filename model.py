@@ -215,15 +215,33 @@ class Skull(BaseModel):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
 
+        self.translation_points = []
+        with open("pista.txt") as file:
+            for line in file:
+                parameters = line.split()
+                self.translation_points.append(glm.vec3(float(parameters[1]) + self.pos[0],
+                                                        float(parameters[2]) + self.pos[1],
+                                                          float(parameters[3]) + self.pos[2]))
+        self.index = 0
+
     def update(self):
         self.texture.use()
         # self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
-
+        
         self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
-        self.m_model = glm.translate(self.m_model, glm.vec3(1,1,1) * 0.2)
-        self.m_model = glm.rotate(self.m_model, 0.02, glm.vec3(0, 0, -1))
+        dirVector = self.translation_points[self.index] - self.pos
+        
+        self.m_model = glm.lookAt(self.translation_points[self.index],
+                                  self.app.camera.position,
+                                  glm.vec3(0,1,0))
+        self.m_model = glm.scale(self.m_model, self.scale)
+        self.m_model[3] = glm.vec4(self.translation_points[self.index],1)
+        #self.m_model = glm.rotate(self.m_model, angle, glm.vec3(0, 0, -1))
         self.shader_program['m_model'].write(self.m_model)
+
+        #print(self.pos)
+        self.index = (self.index + 1) % len(self.translation_points)
 
     def on_init(self):
         # texture

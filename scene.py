@@ -17,7 +17,7 @@ class Scene:
         add = self.add_object
 
         # add(Terrain(app, pos=(0, 0, 0)))
-        add(Pista(app, pos=(0, -20, 0), rot=(0, -90, 0), scale=(100, 100, 100)))
+        add(Pista(app, pos=(0, 0, 0), rot=(0, 0, 0), scale=(100, 100, 100)))
 
         add(Table(app, pos=(0, 0, 0), scale=(0.5, 0.5, 0.5)))
         add(Cube(app, pos=(-1.4, 5.3, -1.2), rot=(0, -26, 0), scale=(0.8, 0.8, 0.8)))
@@ -35,7 +35,7 @@ class Scene:
             print("Target already destroyed")
             return
         self.add_object(Projectile(self.app, objectToFollow=
-                                self.objects[0], pos=self.app.camera.position, rot=self.app.camera.forward))
+                                self.objects[4], pos=self.app.camera.position, rot=self.app.camera.forward))
 
     def render(self):
         [obj.render() for obj in self.objects]
