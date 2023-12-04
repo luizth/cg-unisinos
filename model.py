@@ -225,9 +225,9 @@ class Skull(BaseModel):
         with open("pista.txt") as file:
             for line in file:
                 parameters = line.split()
-                self.translation_points.append(glm.vec3(float(parameters[1]) + self.pos[0],
-                                                        float(parameters[2]) + self.pos[1],
-                                                          float(parameters[3]) + self.pos[2]))
+                self.translation_points.append(glm.vec3(float(parameters[1]),
+                                                        float(parameters[2]),
+                                                          float(parameters[3])))
         self.index = 0
         self.yAngle = self.rot.y
         self.zAngle = self.rot.z
@@ -248,15 +248,15 @@ class Skull(BaseModel):
                                     + self.translation_points[self.index][1]*self.translation_points[self.index][1]) *
                                     math.sqrt(self.pos[0]*self.pos[0]
                                               + self.pos[1]*self.pos[1]))
-        yAngle = math.acos(yAngle * math.pi/180)
+        #yAngle = math.acos(yAngle * math.pi/180)
         zAngle = ((self.translation_points[self.index][0]*self.pos[0]) +
                           (self.translation_points[self.index][2]*self.pos[2]) /
                             math.sqrt(self.translation_points[self.index][0]*self.translation_points[self.index][0]
                                     + self.translation_points[self.index][2]*self.translation_points[self.index][2]) *
                                     math.sqrt(self.pos[0]*self.pos[0]
                                               + self.pos[2]*self.pos[2]))
-        zAngle = math.acos(zAngle * math.pi/180)
-        #print(yAngle, zAngle)
+        #zAngle = math.acos(zAngle * math.pi/180)
+        #print((self.yAngle-yAngle), (self.zAngle-zAngle))
         self.m_model = glm.rotate(self.m_model, self.yAngle - yAngle, glm.vec3(0, 1, 0))
         self.m_model = glm.rotate(self.m_model, self.zAngle - zAngle, glm.vec3(0, 0, 1))
         self.yAngle = yAngle
