@@ -107,11 +107,17 @@ class Cube(BaseModel):
 
     def update(self):
         self.texture.use()
-        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
+        # light
+        self.shader_program['light.position'].write(self.app.light.position)
+        self.shader_program['light.Ia'].write(self.app.light.Ia)
+        self.shader_program['light.Id'].write(self.app.light.Id)
+        self.shader_program['light.Is'].write(self.app.light.Is)
+
         # texture
         self.texture = self.app.mesh.texture.textures[self.tex_id]
         self.shader_program['u_texture_0'] = 0
@@ -129,7 +135,7 @@ class Table(BaseModel):
 
     def update(self):
         self.texture.use()
-        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
         self.shader_program['m_model'].write(self.m_model)
 
@@ -217,7 +223,7 @@ class Skull(BaseModel):
 
     def update(self):
         self.texture.use()
-        # self.shader_program['camPos'].write(self.camera.position)
+        self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
 
         self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
@@ -226,6 +232,11 @@ class Skull(BaseModel):
         self.shader_program['m_model'].write(self.m_model)
 
     def on_init(self):
+        # light
+        self.shader_program['light.position'].write(self.app.light.position)
+        self.shader_program['light.Ia'].write(self.app.light.Ia)
+        self.shader_program['light.Id'].write(self.app.light.Id)
+        self.shader_program['light.Is'].write(self.app.light.Is)
         # texture
         self.texture = self.app.mesh.texture.textures[self.tex_id]
         self.shader_program['u_texture_0'] = 0
