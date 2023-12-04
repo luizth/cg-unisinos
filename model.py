@@ -223,6 +223,8 @@ class Skull(BaseModel):
                                                         float(parameters[2]) + self.pos[1],
                                                           float(parameters[3]) + self.pos[2]))
         self.index = 0
+        self.yAngle = self.rot.y
+        self.zAngle = self.rot.z
 
     def update(self):
         self.texture.use()
@@ -232,12 +234,27 @@ class Skull(BaseModel):
         self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
         dirVector = self.translation_points[self.index] - self.pos
         
-        self.m_model = glm.lookAt(self.translation_points[self.index],
-                                  self.app.camera.position,
-                                  glm.vec3(0,1,0))
-        self.m_model = glm.scale(self.m_model, self.scale)
+
         self.m_model[3] = glm.vec4(self.translation_points[self.index],1)
-        #self.m_model = glm.rotate(self.m_model, angle, glm.vec3(0, 0, -1))
+        yAngle = ((self.translation_points[self.index][0]*self.pos[0]) +
+                          (self.translation_points[self.index][1]*self.pos[1]) /
+                          math.sqrt(self.translation_points[self.index][0]*self.translation_points[self.index][0]
+                                    + self.translation_points[self.index][1]*self.translation_points[self.index][1]) *
+                                    math.sqrt(self.pos[0]*self.pos[0]
+                                              + self.pos[1]*self.pos[1]))
+        yAngle = math.acos(yAngle * math.pi/180)
+        zAngle = ((self.translation_points[self.index][0]*self.pos[0]) +
+                          (self.translation_points[self.index][2]*self.pos[2]) /
+                            math.sqrt(self.translation_points[self.index][0]*self.translation_points[self.index][0]
+                                    + self.translation_points[self.index][2]*self.translation_points[self.index][2]) *
+                                    math.sqrt(self.pos[0]*self.pos[0]
+                                              + self.pos[2]*self.pos[2]))
+        zAngle = math.acos(zAngle * math.pi/180)
+        #print(yAngle, zAngle)
+        self.m_model = glm.rotate(self.m_model, self.yAngle - yAngle, glm.vec3(0, 1, 0))
+        self.m_model = glm.rotate(self.m_model, self.zAngle - zAngle, glm.vec3(0, 0, 1))
+        self.yAngle = yAngle
+        self.zAngle = zAngle
         self.shader_program['m_model'].write(self.m_model)
 
         #print(self.pos)
