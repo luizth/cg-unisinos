@@ -221,15 +221,50 @@ class Skull(BaseModel):
         super().__init__(app, vao_name, tex_id, pos, rot, scale)
         self.on_init()
 
+        self.translation_points = []
+        with open("pista.txt") as file:
+            for line in file:
+                parameters = line.split()
+                self.translation_points.append(glm.vec3(float(parameters[1]) + self.pos[0],
+                                                        float(parameters[2]) + self.pos[1],
+                                                          float(parameters[3]) + self.pos[2]))
+        self.index = 0
+        self.yAngle = self.rot.y
+        self.zAngle = self.rot.z
+
     def update(self):
         self.texture.use()
         self.shader_program['camPos'].write(self.camera.position)
         self.shader_program['m_view'].write(self.camera.m_view)
-
+        
         self.pos = glm.vec3(self.m_model[3][0], self.m_model[3][1], self.m_model[3][2])
-        self.m_model = glm.translate(self.m_model, glm.vec3(1,1,1) * 0.2)
-        self.m_model = glm.rotate(self.m_model, 0.02, glm.vec3(0, 0, -1))
+        dirVector = self.translation_points[self.index] - self.pos
+        
+
+        self.m_model[3] = glm.vec4(self.translation_points[self.index],1)
+        yAngle = ((self.translation_points[self.index][0]*self.pos[0]) +
+                          (self.translation_points[self.index][1]*self.pos[1]) /
+                          math.sqrt(self.translation_points[self.index][0]*self.translation_points[self.index][0]
+                                    + self.translation_points[self.index][1]*self.translation_points[self.index][1]) *
+                                    math.sqrt(self.pos[0]*self.pos[0]
+                                              + self.pos[1]*self.pos[1]))
+        yAngle = math.acos(yAngle * math.pi/180)
+        zAngle = ((self.translation_points[self.index][0]*self.pos[0]) +
+                          (self.translation_points[self.index][2]*self.pos[2]) /
+                            math.sqrt(self.translation_points[self.index][0]*self.translation_points[self.index][0]
+                                    + self.translation_points[self.index][2]*self.translation_points[self.index][2]) *
+                                    math.sqrt(self.pos[0]*self.pos[0]
+                                              + self.pos[2]*self.pos[2]))
+        zAngle = math.acos(zAngle * math.pi/180)
+        #print(yAngle, zAngle)
+        self.m_model = glm.rotate(self.m_model, self.yAngle - yAngle, glm.vec3(0, 1, 0))
+        self.m_model = glm.rotate(self.m_model, self.zAngle - zAngle, glm.vec3(0, 0, 1))
+        self.yAngle = yAngle
+        self.zAngle = zAngle
         self.shader_program['m_model'].write(self.m_model)
+
+        #print(self.pos)
+        self.index = (self.index + 1) % len(self.translation_points)
 
     def on_init(self):
         # light
